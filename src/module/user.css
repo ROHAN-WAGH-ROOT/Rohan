@@ -1,0 +1,117 @@
+.jumbotron.jumbo-form {
+	height: auto;
+	position: relative;
+	border: 0.5px solid #c0c0bb;
+	padding: 20px;
+	background: rgb(255, 255, 255);
+}
+
+.hr-line {
+	width: auto;
+	border-color: #c0c0bb;
+	margin-top: 1rem;
+}
+
+@media screen and (max-width: 500px) {
+	.page-heading {
+		font-size: 4vw;
+	}
+}
+
+.page-heading {
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	font-size: 1em;
+	line-height: 10px;
+	color: black;
+	font-weight: 700;
+	width: max-content;
+	/* margin-top: 20px; */
+}
+
+.form-container {
+	margin: 10px;
+	margin-top: 0;
+	font-weight: 400;
+	color: black;
+	cursor: text;
+	text-transform: capitalize;
+	transition: transform 0.2s ease-in-out;
+}
+
+.form-input {
+	font-size: 15px;
+}
+
+.form-input:focus {
+	box-shadow: 0 1px 5px -2px #42a5f5;
+	border: 1px solid #2196f3;
+}
+
+.submit-button {
+	display: inline-block;
+	color: #fff;
+	background: #0cd070;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: none;
+	font-size: 16px;
+	padding: 8px 16px;
+	font-weight: 500;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.table.common {
+	background-color: rgba(235, 28, 28, 0.05) !important;
+}
+.svgedit {
+	height: auto;
+
+	color: green !important;
+	cursor: pointer;
+}
+
+.svgdelete {
+	height: auto;
+	color: red !important;
+	cursor: pointer;
+}
+.editbutton {
+	outline: none;
+	padding: 0px;
+	margin: 0px;
+	background: none;
+	border: none;
+}
+.deletebutton {
+	border: none;
+	outline: none;
+	margin-left: 10px;
+	background: none;
+}
+.error-msg {
+	color: red;
+}
+.cancel-button {
+	color: #515b64;
+	background-color: rgb(211, 208, 208);
+	display: inline-block;
+	font-weight: 500;
+	padding: 8px 16px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-align: center;
+	vertical-align: middle;
+	margin: 2px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	border: none;
+	font-size: 16px;
+	line-height: 1.5;
+	cursor: pointer;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+		box-shadow 0.15s ease-in-out;
+}
