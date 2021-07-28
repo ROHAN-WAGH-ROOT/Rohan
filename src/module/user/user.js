@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Col, Row, Button, Modal, Table } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './user.css';
-import * as services from '../../../src/services/services';
 import axios from 'axios';
 class User extends Component {
 	constructor(props) {
@@ -18,6 +17,7 @@ class User extends Component {
 			Collage: '',
 			Gender: '',
 			birthDate: '',
+			Hobbies: '',
 			userName: 'admin123',
 			errors: {},
 			collages: '',
@@ -33,6 +33,7 @@ class User extends Component {
 		let birthDate = this.state.birthDate;
 		let Address = this.state.Address;
 		let Collage = this.state.Collage;
+		let Hobbies = this.state.Hobbies;
 		let errors = {};
 		let formIsValid = true;
 
@@ -56,6 +57,18 @@ class User extends Component {
 				errors['inputAddress'] = 'Only letters';
 			}
 		}
+		if (!birthDate) {
+			formIsValid = false;
+			errors['inputBirthDate'] = 'Cannot be empty';
+		}
+		if (!Gender) {
+			formIsValid = false;
+			errors['inputGender'] = 'Cannot be empty';
+		}
+		if (!Hobbies) {
+			formIsValid = false;
+			errors['inputHobbies'] = 'Cannot be empty';
+		}
 		if (!Collage) {
 			formIsValid = false;
 			errors['inputCollage'] = 'Cannot be empty';
@@ -71,9 +84,12 @@ class User extends Component {
 		return formIsValid;
 	}
 	onGetUserData = async () => {
-		services.getService('users').then((res) => {
-			this.setState({ data: res.data.User });
-		});
+		axios
+			.get('https://user-83160-default-rtdb.firebaseio.com/.json?apiKey=AIzaSyAQMy3h40rz67a1vmcWGMQNKMXKNWLCVTU')
+			.then((res) => {
+				console.log(res);
+				this.setState({ data: res.data.User });
+			});
 	};
 	onSubmitHandler = async () => {
 		this.state.showHide = false;
@@ -87,32 +103,48 @@ class User extends Component {
 		};
 		if (this.state.editId === '') {
 			if (this.handleValidation()) {
-				await services.postService('users', data).then((res) => {
-					this.onGetUserData();
-					this.handleReset();
-					this.setState({ onHideForm: !this.state.onHideForm });
-					alert('User Added Successfully');
-				});
+				await axios
+					.post(
+						'https://user-83160-default-rtdb.firebaseio.com/.json?apiKey=AIzaSyAQMy3h40rz67a1vmcWGMQNKMXKNWLCVTU',
+						data
+					)
+					.then((res) => {
+						this.onGetUserData();
+						this.handleReset();
+						this.setState({ onHideForm: !this.state.onHideForm });
+						alert('User Added Successfully');
+					});
 			} else {
 				console.log('fill the form ');
 			}
 		} else {
 			if (this.handleValidation()) {
-				await services.patchService('users', this.state.editId, data).then((res) => {
-					this.onGetUserData();
-					this.setState({ onHideForm: !this.state.onHideForm, editId: '' });
-					this.handleReset();
-				});
+				await axios
+					.patch(
+						'https://user-83160-default-rtdb.firebaseio.com/.json?apiKey=AIzaSyAQMy3h40rz67a1vmcWGMQNKMXKNWLCVTU',
+						data
+					)
+					.then((res) => {
+						this.onGetUserData();
+						this.setState({ onHideForm: !this.state.onHideForm, editId: '' });
+						this.handleReset();
+					});
 			} else {
 				console.log('form is Not Updated');
 			}
 		}
 	};
 	onRemoveData = async (id) => {
-		await services.deleteService('users', this.state.editId).then((res) => {
-			const newData = this.state.data.filter((obj) => obj._id !== this.state.editId);
-			this.setState({ data: newData, showHide: false, editId: '' });
-		});
+		await axios
+			.delete(
+				'https://user-83160-default-rtdb.firebaseio.com/.json?apiKey=AIzaSyAQMy3h40rz67a1vmcWGMQNKMXKNWLCVTU/_id=',
+				this.state.data.id
+			)
+			.then(() => {
+				console.log(this.state.data._id);
+				const newData = this.state.data.filter((obj) => obj._id !== this.state.editId);
+				this.setState({ data: newData, showHide: false, editId: '' });
+			});
 	};
 	onEditData = async (id) => {
 		const newData = this.state.data.filter((obj) => obj._id === id)[0];
@@ -120,6 +152,8 @@ class User extends Component {
 			Name: newData.Name,
 			Gender: newData.Gender,
 			Address: newData.Address,
+			Collage: newData.Collage,
+			Hobbies: newData.Hobbies,
 			birthDate: newData.birthDate,
 			editId: newData._id,
 			dyanamicBtnName: 'Update'
@@ -137,6 +171,8 @@ class User extends Component {
 			Gender: '',
 			Address: '',
 			birthDate: '',
+			Hobbies: '',
+			Collage: '',
 			errors: ''
 		});
 	};
@@ -204,7 +240,6 @@ class User extends Component {
 									onChange={(e) => {
 										this.setState({ Gender: e.target.value });
 									}}
-									value={this.state.Gender}
 									ref="inputGender"
 								/>{' '}
 								Male
@@ -215,7 +250,6 @@ class User extends Component {
 									onChange={(e) => {
 										this.setState({ Gender: e.target.value });
 									}}
-									value={this.state.Gender}
 									ref="inputGender"
 								/>{' '}
 								Female
@@ -226,7 +260,6 @@ class User extends Component {
 									onChange={(e) => {
 										this.setState({ Gender: e.target.value });
 									}}
-									value={this.state.Gender}
 									ref="inputGender"
 								/>{' '}
 								Other
@@ -298,7 +331,7 @@ class User extends Component {
 								onChange={(e) => {
 									this.setState({ Hobbies: e.target.value });
 								}}
-								value={this.state.Hobbies}
+								value="Cricket"
 								ref="inputHobbies"
 							/>Cricket<br />
 							<input
@@ -307,26 +340,25 @@ class User extends Component {
 								onChange={(e) => {
 									this.setState({ Hobbies: e.target.value });
 								}}
-								value={this.state.Hobbies}
+								value="Reading"
 								ref="inputHobbies"
-							/>Cricket<br />
+							/>Reading<br />
 							<input
 								type="checkbox"
 								id="inputHobbies"
 								onChange={(e) => {
 									this.setState({ Hobbies: e.target.value });
 								}}
-								value={this.state.Hobbies}
+								value="Singing"
 								ref="inputHobbies"
-							/>Cricket
+							/>Singing
 							<input
-								type="text"
-								className="form-control form-input"
+								type="checkbox"
 								id="inputHobbies"
 								onChange={(e) => {
 									this.setState({ Hobbies: e.target.value });
 								}}
-								value={this.state.Hobbies}
+								value="Other"
 								ref="inputHobbies"
 							/>Other
 							<div className="error-msg">{this.state.errors['inputHobbies']}</div>
