@@ -1,5 +1,5 @@
 import React from 'react';
-import User from './module/user';
+import User from './module/user/user';
 import './App.css';
 function App() {
 	return (
