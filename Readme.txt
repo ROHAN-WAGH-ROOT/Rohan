@@ -31,3 +31,8 @@ npm install -g firebase-tools
 
 6.
 npm install axios --save
+
+
+
+firebase link :- https://user-83160-default-rtdb.firebaseio.com/
+and if needed please mail me for firebase database access
